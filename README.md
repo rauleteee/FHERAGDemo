@@ -107,13 +107,13 @@ The security invariant holds here too: `web/app.py` runs the client (secret key)
 
 ## The idea in two pictures
 
-**Normal search:** you send your question and documents to a server as plain text, so whoever runs that server can read all of it.
+**Normal search:** you ask your agent a question, and it looks the answer up in a knowledge database. But your question and every document travel as plain text, so whoever runs the server can read all of it.
 
-![Normal search: your data travels to the server as readable plain text, and the server can read everything you send](docs/architecture/latest/without-fhe.svg)
+![Normal search: you ask your agent, it searches the knowledge database on the server, and the server can read your question and every document](docs/architecture/latest/without-fhe.svg)
 
-**Search with FHE:** you lock your data with your own key first. The server does the exact same search on the locked box and never opens it — only you can.
+**Search with FHE:** you lock everything with your own key first. Your agent runs the exact same search over the locked database, the server never opens any of it, and the answer comes back still locked — only you can unlock it.
 
-![Search with FHE: you lock your data with your key, the server searches the locked box without ever reading it, and only you can unlock the answer](docs/architecture/latest/with-fhe.svg)
+![Search with FHE: you ask your agent, it searches the locked knowledge database on the server, the server never reads anything, and only your key can unlock the answer](docs/architecture/latest/with-fhe.svg)
 
 ## How this works, in one picture
 
