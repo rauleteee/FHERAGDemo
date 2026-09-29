@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ahg" markerWidth="12" markerHeight="12" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L10 4 L0 8 Z" fill="#16A34A"/>
+    </marker>
+    <filter id="sh2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="500" fill="#FFFFFF"/>
+
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="800" fill="#15803D">Search with FHE — the server never sees your data</text>
+  <text x="600" y="86" text-anchor="middle" font-size="17" fill="#64748B">You lock your data with your key first. The server does the search on the locked box and can never open it.</text>
+
+  <!-- Arrow -->
+  <line x1="360" y1="270" x2="840" y2="270" stroke="#16A34A" stroke-width="8" marker-end="url(#ahg)"/>
+
+  <!-- Traveling data: locked box -->
+  <g filter="url(#sh2)">
+    <rect x="530" y="150" width="140" height="104" rx="10" fill="#ECFDF3" stroke="#16A34A" stroke-width="3.5"/>
+  </g>
+  <g fill="#BBF7D0">
+    <rect x="552" y="172" width="96" height="9" rx="4"/>
+    <rect x="552" y="192" width="76" height="9" rx="4"/>
+    <rect x="552" y="232" width="58" height="9" rx="4"/>
+  </g>
+  <!-- padlock on the box -->
+  <g transform="translate(600,206)">
+    <path d="M-17 -3 v-11 a17 17 0 0 1 34 0 v11" fill="none" stroke="#15803D" stroke-width="6"/>
+    <rect x="-24" y="-3" width="48" height="38" rx="7" fill="#22C55E" stroke="#15803D" stroke-width="3"/>
+    <circle cx="0" cy="13" r="5" fill="#FFFFFF"/>
+    <rect x="-2.5" y="13" width="5" height="13" rx="2" fill="#FFFFFF"/>
+  </g>
+  <text x="600" y="316" text-anchor="middle" font-size="16" font-weight="700" fill="#15803D">locked box — nobody can read it</text>
+
+  <!-- YOU (laptop) -->
+  <g filter="url(#sh2)" transform="translate(210,260)">
+    <rect x="-58" y="-44" width="116" height="76" rx="9" fill="#FFFFFF" stroke="#334155" stroke-width="4"/>
+    <rect x="-48" y="-34" width="96" height="56" rx="4" fill="#E8F4FD"/>
+    <path d="M-74 36 L74 36 L60 50 L-60 50 Z" fill="#CBD5E1" stroke="#334155" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <text x="210" y="360" text-anchor="middle" font-size="22" font-weight="800" fill="#0F172A">You</text>
+  <text x="210" y="386" text-anchor="middle" font-size="15" fill="#64748B">your computer</text>
+
+  <!-- Key badge: only you have it -->
+  <g filter="url(#sh2)" transform="translate(148,196)">
+    <circle r="34" fill="#FEF9C3" stroke="#F59E0B" stroke-width="3"/>
+    <g transform="translate(-8,0)">
+      <circle cx="-8" cy="0" r="11" fill="none" stroke="#D97706" stroke-width="6"/>
+      <rect x="1" y="-3.5" width="30" height="7" rx="2" fill="#D97706"/>
+      <rect x="24" y="3" width="5" height="11" rx="2" fill="#D97706"/>
+      <rect x="14" y="3" width="5" height="11" rx="2" fill="#D97706"/>
+    </g>
+  </g>
+  <text x="148" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#B45309">your secret key</text>
+
+  <!-- SERVER -->
+  <g filter="url(#sh2)" transform="translate(985,260)">
+    <rect x="-54" y="-60" width="108" height="120" rx="11" fill="#FFFFFF" stroke="#334155" stroke-width="4"/>
+    <rect x="-42" y="-48" width="84" height="30" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="-42" y="-13" width="84" height="30" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="-42" y="22" width="84" height="30" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <circle cx="30" cy="-33" r="4" fill="#94A3B8"/><circle cx="30" cy="2" r="4" fill="#94A3B8"/><circle cx="30" cy="37" r="4" fill="#94A3B8"/>
+  </g>
+  <text x="985" y="360" text-anchor="middle" font-size="22" font-weight="800" fill="#0F172A">The server</text>
+  <text x="985" y="386" text-anchor="middle" font-size="15" fill="#64748B">someone else's computer</text>
+
+  <!-- Eye badge crossed out: server can't read -->
+  <g filter="url(#sh2)" transform="translate(1052,204)">
+    <circle r="36" fill="#DCFCE7" stroke="#22C55E" stroke-width="3"/>
+    <path d="M-21 0 Q0 -16 21 0 Q0 16 -21 0 Z" fill="#FFFFFF" stroke="#16A34A" stroke-width="3"/>
+    <circle r="7.5" fill="#16A34A"/>
+    <line x1="-27" y1="-23" x2="27" y2="23" stroke="#16A34A" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- Banner -->
+  <rect x="120" y="418" width="960" height="60" rx="14" fill="#DCFCE7" stroke="#22C55E" stroke-width="2"/>
+  <text x="600" y="455" text-anchor="middle" font-size="19" font-weight="700" fill="#15803D">✅  Only you have the key. The server searches your locked data and never sees what it is.</text>
+</svg>
