@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FHE-RAG · Búsqueda sobre datos cifrados</title>
+<meta name="description" content="Explicación animada: búsqueda semántica sin FHE vs con FHE. Qué es el cliente, qué es el servidor y qué almacena cada uno." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- iconos reutilizables (símbolo SVG, un solo trazo) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-shield"><path d="M12 3l7 3v6c0 4.8-3.3 8-7 9-3.7-1-7-4.2-7-9V6z"/><path d="M9 12l2 2 4-4"/></g>
+  <g id="i-key"><circle cx="7.5" cy="15.5" r="4"/><path d="M10.3 12.7 20 3M16.5 6.5l2.2 2.2M13.6 9.4l2.2 2.2"/></g>
+  <g id="i-lock"><rect x="5" y="11" width="14" height="9" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g>
+  <g id="i-eye"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+  <g id="i-eyeoff"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.4 5.4A9.4 9.4 0 0 1 21 12a15 15 0 0 1-2 2.6M6 6.3A15 15 0 0 0 3 12a9.4 9.4 0 0 0 12.3 4.4"/></g>
+  <g id="i-db"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></g>
+  <g id="i-doc"><rect x="4" y="3" width="16" height="18" rx="2.2"/><path d="M8 8h8M8 12h8M8 16h5"/></g>
+  <g id="i-search"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></g>
+  <g id="i-play"><path d="M7 5l12 7-12 7z"/></g>
+  <g id="i-pause"><path d="M8 5v14M16 5v14"/></g>
+  <g id="i-prev"><path d="M19 5v14L9 12zM6 5v14"/></g>
+  <g id="i-next"><path d="M5 5v14l10-7zM18 5v14"/></g>
+  <g id="i-replay"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></g>
+  <g id="i-check"><path d="M4.5 12.5 9 17 19.5 6.5"/></g>
+  <g id="i-cpu"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/></g>
+  <g id="i-server"><rect x="3.5" y="4" width="17" height="7" rx="1.8"/><rect x="3.5" y="13" width="17" height="7" rx="1.8"/><path d="M7 7.5h.01M7 16.5h.01"/><path d="M11 7.5h5M11 16.5h5"/></g>
+  <g id="i-keyoff"><circle cx="7.5" cy="15.5" r="4"/><path d="M10.3 12.7 20 3M16.5 6.5l2.2 2.2M13.6 9.4l2.2 2.2"/><path d="M3 3l18 18"/></g>
+  <g id="i-arrow"><path d="M5 12h14M13 6l6 6-6 6"/></g>
+</defs></svg>
+
+<nav class="nav">
+  <span class="brand"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-shield"/></svg> FHE-RAG</span>
+  <div class="links">
+    <a href="#vectors">Búsqueda por vectores</a>
+    <a href="#demo">Demo animada</a>
+    <a href="#sinfhe">Sin FHE</a>
+    <a href="#confhe">Con FHE</a>
+    <a href="#storage">Cliente vs Servidor</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero wrap">
+  <h1>Buscar en tus datos <span class="grad">sin que el servidor los pueda leer</span>.</h1>
+  <p class="lead">La búsqueda semántica es, en el fondo, un producto punto entre vectores. Este proyecto lo hace <b>sobre datos cifrados</b>: el servidor calcula la similitud sin tener nunca la clave. Aquí lo ves en movimiento — y comparado, paso a paso, con cómo se haría <b>sin</b> cifrado.</p>
+  <div class="cta">
+    <a class="btn primary" href="#demo"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><use href="#i-play"/></svg> Ver la comparación animada</a>
+    <a class="btn ghost" href="#storage">¿Qué guarda cada máquina?</a>
+  </div>
+</section>
+
+<!-- VECTOR SEARCH -->
+<section id="vectors" class="wrap">
+  <div class="section-head">
+    <h2>Cómo funciona la búsqueda por embeddings</h2>
+    <p class="lead">Un <b>embedding</b> convierte cada texto en un <b>punto</b>. Los textos que significan algo parecido caen <b>cerca</b>. Tu pregunta es otro punto (▲): los documentos más cercanos son los más relevantes — esa cercanía es el <b>producto punto</b>. Elige una pregunta y mira cómo se mide:</p>
+  </div>
+  <div class="vs-queries" id="vsQueries"></div>
+  <div class="vs-wrap">
+    <div class="vs-canvas">
+      <svg id="vsSvg" viewBox="0 0 440 300" preserveAspectRatio="xMidYMid meet" aria-label="Mapa de embeddings">
+        <g id="vsLines"></g>
+        <g id="vsDots"></g>
+        <g id="vsQuery"></g>
+        <g id="vsLabels"></g>
+      </svg>
+      <div class="vs-legend" id="vsLegend"></div>
+    </div>
+    <div class="vs-side">
+      <div class="vs-rank" id="vsRank"><div class="vr-title">Similitud con tu pregunta (producto punto real)</div><div id="vsRankRows"></div></div>
+      <div class="vs-caption" id="vsCaption">Cargando embeddings reales…</div>
+      <button class="btn ghost" id="vsReplay"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-replay"/></svg> Repetir animación</button>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo" id="demo">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>La misma búsqueda, con y sin FHE</h2>
+      <p class="lead">Elige una pregunta y pulsa <b>Ejecutar en el backend</b>: el ciphertext, los scores y el ranking que ves son <b>los reales</b> que devuelve el pipeline para esa pregunta. Cambia el modo y fíjate en <b>qué acaba viendo el servidor</b>.</p>
+    </div>
+
+    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+      <div class="mode-switch" role="group" aria-label="Modo">
+        <button id="modePlain" class="plain" aria-pressed="false"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eye"/></svg> Sin FHE</button>
+        <button id="modeFhe" class="fhe" aria-pressed="true"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-lock"/></svg> Con FHE</button>
+      </div>
+      <span class="status loading" id="liveStatus"><span class="sdot"></span> <span id="liveTx">Conectando con el pipeline real…</span></span>
+    </div>
+
+    <div class="runbar">
+      <select id="runSelect" aria-label="Elige una pregunta"></select>
+      <button class="btn primary" id="runBtn"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-search"/></svg> Ejecutar en el backend</button>
+      <span class="hint">cifra la consulta, busca sobre ciphertext y descifra — de verdad</span>
+    </div>
+
+    <div class="stage-shell">
+      <div class="stage-scroll">
+      <div class="stage" id="stage" data-mode="fhe" data-step="0">
+        <!-- CLIENT zone -->
+        <div class="zone client">
+          <div class="zlabel"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cpu"/></svg> CLIENTE · tu máquina</div>
+          <div class="zsub"><span class="keytag has"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-key"/></svg> clave secreta · vive aquí</span></div>
+        </div>
+        <!-- SERVER zone -->
+        <div class="zone server">
+          <div class="zlabel"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-server"/></svg> SERVIDOR</div>
+          <div class="zsub"><span class="keytag none"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-keyoff"/></svg> sin clave · solo contexto público</span></div>
+        </div>
+
+        <div class="wire"><span class="wlabel">red pública · HTTP</span></div>
+
+        <!-- document -->
+        <div class="node doc" id="doc">
+          <div class="doc-k"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-doc"/></svg> DOCUMENTO</div>
+          <div class="doc-t">«El CKKS permite operar sobre números cifrados.»</div>
+        </div>
+
+        <!-- embedding tiles -->
+        <div class="node tiles" id="tiles" style="opacity:0">
+          <span class="tile">.41</span><span class="tile">.02</span><span class="tile">-.55</span>
+          <span class="tile">.13</span><span class="tile">.28</span><span class="tile">…</span>
+        </div>
+
+        <!-- client-side results / ranking -->
+        <div class="node results" id="results" style="opacity:0"></div>
+
+        <!-- traveling packet -->
+        <div class="node packet hidden" id="packet" data-face="cipher">
+          <span class="face face-plain"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-doc"/></svg> 0.41, 0.02, −0.55 …</span>
+          <span class="face face-cipher"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-lock"/></svg> 8f2a c1d0 ▮▮▮▮ …</span>
+        </div>
+
+        <!-- database -->
+        <div class="node db" id="db">
+          <div class="db-head"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-db"/></svg> Base de datos (KB)</div>
+          <div class="cyl"><div class="cyl-top"></div><div class="dbrows" id="dbrows"></div></div>
+        </div>
+
+        <!-- server vision -->
+        <div class="eye blind" id="eye"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eyeoff"/></svg> <span id="eyeTx">El servidor ve: nada legible</span></div>
+      </div>
+      </div>
+
+      <!-- narration -->
+      <div class="narr">
+        <span class="step-no" id="narrNo">0</span>
+        <span class="step-tx" id="narrTx">Pulsa play para ver el recorrido.</span>
+      </div>
+
+      <!-- controls -->
+      <div class="controls">
+        <button class="btn icon" id="btnPrev" title="Anterior"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-prev"/></svg></button>
+        <button class="btn primary" id="btnPlay"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><use href="#i-play"/></svg> <span id="playTx">Reproducir</span></button>
+        <button class="btn icon" id="btnNext" title="Siguiente"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-next"/></svg></button>
+        <button class="btn ghost" id="btnReplay"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-replay"/></svg> Reiniciar</button>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+
+    <!-- full retrieved answer -->
+    <div class="answer" id="answer"></div>
+
+    <!-- what the server can read -->
+    <div class="seepanel" id="seePanel" data-tone="neutral">
+      <div class="sp-head" id="seeHead"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eyeoff"/></svg> <span id="seeHeadTx">Lo que el servidor puede leer</span></div>
+      <div class="sp-body" id="seeBody">— aún nada —</div>
+    </div>
+  </div>
+</section>
+
+<!-- THEORY: SIN FHE -->
+<section id="sinfhe" class="wrap">
+  <div class="section-head">
+    <h2>Cómo se haría <span style="color:var(--red)">sin FHE</span></h2>
+    <p class="lead">Es el RAG estándar de hoy. Funciona, es rápido… y el servidor termina con una copia legible de tus datos.</p>
+  </div>
+  <div class="grid2">
+    <div class="panel red">
+      <span class="p-tag"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eye"/></svg> El servidor lo ve todo</span>
+      <h3>El recorrido</h3>
+      <ol class="steps-list">
+        <li><span class="n">1</span><span><b>Cliente</b>: convierte cada documento en un embedding (vector de 384 números).</span></li>
+        <li><span class="n">2</span><span>Envía el vector <b>en claro</b> por la red.</span></li>
+        <li><span class="n">3</span><span><b>Servidor</b>: guarda los vectores tal cual en su base de datos.</span></li>
+        <li><span class="n">4</span><span>En la búsqueda, recibe el vector de la consulta <b>en claro</b>.</span></li>
+        <li><span class="n">5</span><span>Calcula los productos punto, ordena y ya conoce el ranking y el mejor resultado.</span></li>
+      </ol>
+      <div class="verdict">El servidor (o cualquiera que lo vulnere) tiene los vectores, la consulta y los resultados. Y con <b>embedding inversion attacks</b> esos vectores se pueden convertir de nuevo en el texto original.</div>
+    </div>
+    <div class="panel">
+      <h3>¿Por qué es un problema?</h3>
+      <p class="lead" style="font-size:1rem">Se suele asumir que «un vector de números no es dato sensible». Es falso:</p>
+      <ul class="steps-list">
+        <li><span class="n">→</span><span>El embedding <b>codifica el significado</b> del texto; el significado es justo lo sensible.</span></li>
+        <li><span class="n">→</span><span>Ataques publicados <b>reconstruyen el texto</b> a partir del vector almacenado.</span></li>
+        <li><span class="n">→</span><span>En un RAG, esos vectores viven en un servicio de terceros que no controlas.</span></li>
+      </ul>
+      <div class="callout co-danger" style="margin-top:1.3rem">
+        <span class="co-ic"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eyeoff"/></svg></span>
+        <div><div class="co-t">Confidencialidad: rota</div><div class="co-b">Nada de lo que llega al servidor está protegido frente al propio servidor.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THEORY: CON FHE -->
+<section id="confhe" class="demo"><div class="wrap">
+  <div class="section-head">
+    <h2>Cómo lo hacemos <span style="color:var(--green)">con FHE</span></h2>
+    <p class="lead">Mismo resultado para el usuario, misma matemática (un producto punto)… pero ejecutada sobre ciphertext. La clave nunca sale de tu máquina.</p>
+  </div>
+  <div class="grid2">
+    <div class="panel green">
+      <span class="p-tag"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-eyeoff"/></svg> El servidor no ve nada</span>
+      <h3>El recorrido</h3>
+      <ol class="steps-list">
+        <li><span class="n">1</span><span><b>Cliente</b>: genera el embedding y lo <b>cifra con su clave secreta</b> (CKKS).</span></li>
+        <li><span class="n">2</span><span>Envía solo el <b>ciphertext</b> por la red.</span></li>
+        <li><span class="n">3</span><span><b>Servidor</b>: guarda ciphertext en su KB. No puede leer texto ni vector.</span></li>
+        <li><span class="n">4</span><span>La consulta también se cifra antes de enviarse.</span></li>
+        <li><span class="n">5</span><span>El servidor hace el producto punto <b>homomórfico</b>: opera sobre cifrado y devuelve <b>scores cifrados</b>.</span></li>
+        <li><span class="n">6</span><span><b>Cliente</b>: descifra los scores con su clave y obtiene el ranking. El servidor nunca lo supo.</span></li>
+      </ol>
+      <div class="verdict">Lo único que cruza la frontera y lo único que se almacena en el servidor es ciphertext. Sin la clave, esos bytes no vuelven a ser ni texto ni vector.</div>
+    </div>
+    <div class="panel">
+      <h3>¿Por qué CKKS?</h3>
+      <ul class="steps-list">
+        <li><span class="n">→</span><span>CKKS cifra <b>vectores de números reales</b> y permite sumarlos y multiplicarlos cifrados (SIMD) — justo lo que necesita un producto punto.</span></li>
+        <li><span class="n">→</span><span>El servidor recibe un <b>contexto público</b> (claves de evaluación) — <b>nunca</b> la clave secreta.</span></li>
+        <li><span class="n">→</span><span>Es aritmética aproximada: el score descifrado trae un error minúsculo (~1e-6), irrelevante para ordenar.</span></li>
+      </ul>
+      <div class="callout co-note" style="margin-top:1.3rem">
+        <span class="co-ic"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-key"/></svg></span>
+        <div><div class="co-t">Coste honesto de la privacidad</div><div class="co-b">El ciphertext pesa ~100× más que el vector en claro. Es el precio real, medido, de que el servidor no pueda leer nada.</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- STORAGE MATRIX -->
+<section id="storage" class="wrap">
+  <div class="section-head">
+    <h2>Cliente vs Servidor — qué vive en cada uno</h2>
+    <p class="lead">La regla que no se rompe nunca: <b>la clave secreta y todo lo descifrado viven solo en el cliente</b>. El servidor solo ve lo que cruza la red.</p>
+  </div>
+  <div class="matrix">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span class="who client"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-key"/></svg> Cliente (tu máquina)</span></th>
+          <th><span class="who server"><svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cpu"/></svg> Servidor</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>Clave secreta</th><td><span class="tag-yes">Sí</span> — la genera y la guarda</td><td><span class="tag-no">Nunca</span> — solo recibe el contexto público</td></tr>
+        <tr><th>Documentos en claro</th><td><span class="tag-yes">Sí</span> — los tienes tú</td><td><span class="tag-no">No</span></td></tr>
+        <tr><th>Embeddings en claro</th><td><span class="tag-yes">Sí</span> — se generan aquí</td><td><span class="tag-no">No</span> (con FHE) · <span class="tag-no" style="color:var(--red)">Sí, y es el fallo</span> (sin FHE)</td></tr>
+        <tr><th>Lo que se almacena</th><td>Los documentos y la clave</td><td><b>Ciphertext</b> de los embeddings (con FHE) · vectores legibles (sin FHE)</td></tr>
+        <tr><th>Cifrar / descifrar</th><td><span class="tag-yes">Sí</span> — único sitio donde ocurre</td><td><span class="tag-no">No</span> — no hay ni un <code>.decrypt()</code></td></tr>
+        <tr><th>Cómputo de similitud</th><td>Descifra los scores y ordena</td><td>Producto punto <b>homomórfico</b> sobre ciphertext</td></tr>
+        <tr><th>Qué llega a ver</th><td>Todo (es tuyo)</td><td><span class="tag-yes">Solo ciphertext</span> (con FHE) · <span class="tag-no">todo</span> (sin FHE)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout co-safe" style="margin-top:1.6rem">
+    <span class="co-ic"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check"/></svg></span>
+    <div><div class="co-t">Invariante de seguridad del proyecto</div><div class="co-b">El proceso Servidor nunca posee la clave secreta y nunca recibe ni produce un valor descifrado. Cliente y Servidor son procesos separados que hablan por HTTP; lo único que cruza esa frontera es ciphertext.</div></div>
+  </div>
+</section>
+
+<footer class="wrap">
+  Demo educativa · el pipeline real (CKKS / TenSEAL) se ejecuta con <code>./run.sh learn</code> y <code>./run.sh demo</code>.
+  Esta página es un explicador autónomo; la criptografía real vive en <code>client/</code> y <code>server/</code>.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

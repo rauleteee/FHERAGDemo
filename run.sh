@@ -36,6 +36,10 @@ Usage: ./run.sh [command] [args]
                      and the real decrypted result at every stage
   demo               Run the one-command end-to-end demo
                      (starts its own server, no second terminal needed)
+  ui [port]          Serve the animated web explainer (default port: 8080).
+                     Self-contained HTML/CSS/JS: an in-motion walkthrough that
+                     compares semantic search WITHOUT FHE vs WITH FHE, with
+                     theory on client/server and what each one stores.
   server [port]      Start the FastAPI server      (default port: 8001)
   client [url]       Run an interactive client      (default url:  http://127.0.0.1:8001)
                      against an already-running server — use this in a
@@ -112,6 +116,41 @@ cmd_learn() {
   "$PYTHON_BIN" educational_demo.py
 }
 
+cmd_ui() {
+  # Animated web explainer, backed by the REAL FHE pipeline (web/app.py runs
+  # the real server + client and serves the page). Needs the venv + model.
+  ensure_venv
+  if [ ! -f "$MODEL_FILE" ]; then
+    echo "Embedding model not found — downloading first (one-time, ~90MB)..."
+    cmd_download
+    echo
+  fi
+  local want="${1:-8080}"
+  # Pick the first free port at/above the requested one, so a busy port
+  # (e.g. another app already on 8080) doesn't stop the demo.
+  local port
+  port="$("$PYTHON_BIN" - "$want" <<'PY'
+import socket, sys
+start = int(sys.argv[1])
+for p in range(start, start + 50):
+    s = socket.socket()
+    try:
+        s.bind(("127.0.0.1", p)); s.close(); print(p); break
+    except OSError:
+        continue
+else:
+    print(start)
+PY
+)"
+  if [ "$port" != "$want" ]; then
+    echo "Port ${want} is busy — using ${port} instead."
+  fi
+  echo "Serving the web explainer (real pipeline) at http://127.0.0.1:${port}"
+  echo "First load takes a few seconds while it encrypts + indexes the documents."
+  echo "(Ctrl-C to stop)"
+  "$PYTHON_BIN" -m uvicorn web.app:app --host 127.0.0.1 --port "$port"
+}
+
 cmd_stop() {
   # Doesn't need the venv — it just kills processes, no Python needed.
   bash "$SCRIPT_DIR/stop.sh" "$@"
@@ -149,6 +188,7 @@ main() {
     server)         cmd_server "$@" ;;
     client)         cmd_client "$@" ;;
     demo)           cmd_demo "$@" ;;
+    ui)             cmd_ui "$@" ;;
     learn)          cmd_learn "$@" ;;
     stop)           cmd_stop "$@" ;;
     help|-h|--help) usage ;;

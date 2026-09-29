@@ -20,8 +20,8 @@ class Step:
     kind of thing it shows, the value itself, plus optional extras
     (e.g. byte counts for a size comparison). Built once here, then
     rendered however the caller wants: printed to a terminal (see
-    rag_client.py's verbose mode) or displayed in a UI (the Streamlit
-    app reads these directly, no parsing of printed text needed)."""
+    rag_client.py's verbose mode) or read straight from `call_log` by
+    a UI, with no parsing of printed text needed."""
     label: str
     kind: str  # "vector" | "bytes" | "text" | "score" | "info"
     value: Any

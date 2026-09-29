@@ -25,7 +25,7 @@ from shared.sample_documents import SAMPLE_DOCUMENTS
 
 
 
-SAMPLE_QUERY = "What does FHE actually let you do?"
+SAMPLE_QUERY = "¿Qué me permite hacer realmente el FHE?"
 
 
 def _run_server() -> None:

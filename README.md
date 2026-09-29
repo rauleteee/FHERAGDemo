@@ -73,6 +73,23 @@ Sanity check — does this match the same math done in plaintext?
 
 Full output has 6 steps, color-coded in your terminal: yellow for the plaintext data that's only ever visible to you, gray for ciphertext, red for what the server would see if it tried to read any of it, green for what's safe.
 
+## `./run.sh ui` — the animated web explainer (for talks)
+
+A web app built for **explaining this to an audience** — and it runs on the **real pipeline**, not mock data. `web/app.py` starts the real ciphertext-only server, generates the key, encrypts and indexes the real document embeddings, and serves the page; the frontend animates the actual values it gets back: real embeddings, real ciphertext and its real size (~100×), real encrypted scores, and the real decrypted ranking.
+
+```bash
+./run.sh ui                  # serves http://127.0.0.1:8080 (auto-picks a free port)
+```
+
+First load takes a few seconds while it encrypts + indexes. What's inside:
+
+- **How embedding search works** — the real 13 embeddings projected to 2D (real PCA), with a query point and the **real dot-product** ranking. Pick a query and watch the nearest documents light up.
+- **Animated comparison** — a `Sin FHE ⟷ Con FHE` toggle over the same client/server stage, driven by a real search you can type yourself ("Ejecutar en el backend"). Play/pause/step controls; you see the response travel back, the client **decrypt** it, and the **real ranking** with the chosen document. A persistent "what the server can read" panel turns red (without FHE) or green (with FHE). Deep-linkable for a talk: `?mode=fhe&step=7`.
+- **Theory · without FHE / with FHE** — how each is done and why it matters (embedding inversion; why CKKS).
+- **Cliente vs Servidor** — an explicit matrix of what each side holds and stores.
+
+The security invariant holds here too: `web/app.py` runs the client (secret key) and talks to the real server over HTTP; the server never receives the key and never decrypts. The API only exposes client-side-legitimate values (embeddings, ciphertext, encrypted scores, decrypted ranking).
+
 ## Other ways to run it
 
 ```bash

@@ -83,8 +83,8 @@ if pkill -f "uvicorn server.app" 2>/dev/null; then
   echo "Stopped a uvicorn server.app process not on a checked port."
   found_extra=true
 fi
-if pkill -f "streamlit run streamlit_app.py" 2>/dev/null; then
-  echo "Stopped a streamlit_app.py process not on a checked port."
+if pkill -f "http.server .* --directory.*/web" 2>/dev/null; then
+  echo "Stopped a web-explainer static server not on a checked port."
   found_extra=true
 fi
 

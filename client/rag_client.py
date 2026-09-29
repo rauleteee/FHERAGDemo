@@ -1,9 +1,9 @@
 """
 High-level RAG client.
 
-This is what a Streamlit app, CLI script, or agent should import. It
-owns the secret key (via FHEClient) for the lifetime of the session
-and talks to the remote Server over HTTP.
+This is what a CLI script, UI, or agent should import. It owns the
+secret key (via FHEClient) for the lifetime of the session and talks
+to the remote Server over HTTP.
 
 The server only ever sees what crosses the `requests` calls in this
 file — read this file if you want to audit exactly what leaves the
@@ -13,11 +13,10 @@ plaintext vector, plaintext document, or plaintext score being
 local `decrypt_*` call.
 
 Every index/search call records a structured list of `Step` objects
-into `self.call_log` — this is what `streamlit_app.py` reads to
-render the same walkthrough visually. Set verbose=True to ALSO print
-them to the terminal (used by `run.sh learn`, `run.sh client`,
-`run.sh agent`). Both come from the exact same recorded steps — there
-is no separate "UI version" of this logic.
+into `self.call_log`, so any consumer can render the same walkthrough
+without parsing printed text. Set verbose=True to ALSO print them to
+the terminal (used by `run.sh learn`, `run.sh client`, `run.sh demo`).
+Both come from the exact same recorded steps.
 """
 from __future__ import annotations
 

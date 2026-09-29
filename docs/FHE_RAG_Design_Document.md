@@ -92,7 +92,7 @@ sequenceDiagram
 | Client & Server services | Python 3.11, FastAPI | Clean separation of trust boundaries as two independent services |
 | Ciphertext storage | SQLite | Sufficient for demo scale; avoids overstating scope with a full vector DB |
 | RAG framework integration | Custom LangChain `BaseRetriever` subclass | Demonstrates real-world drop-in usability, not just a standalone script |
-| Demo interface | Streamlit | Fast to build; supports side-by-side encrypted vs. plaintext comparison |
+| Demo interface | Terminal walkthrough (`run.sh learn`) + a static HTML/CSS/JS web explainer (`web/`, `run.sh ui`) | Terminal shows the real pipeline with real values; the web page animates and compares encrypted vs. plaintext side by side for talks |
 | Benchmarking | matplotlib / plotly | Visualizes the latency trade-off honestly |
 | Deployment | Hugging Face Spaces | Free, public, portfolio-visible |
 | Version control | GitHub (public repo, MIT license) | Discoverability for recruiters and the FHE/privacy community |
@@ -115,7 +115,7 @@ This project is deliberately scoped to be **technically real, not oversold**. Im
 ### MVP (what gets built first)
 - Working Client/Server split with TenSEAL-based encrypted dot product search
 - LangChain retriever integration
-- Streamlit demo: upload documents → encrypted indexing → ask a question → encrypted retrieval → decrypted answer
+- Demo flow: documents → encrypted indexing → ask a question → encrypted retrieval → decrypted answer (terminal walkthrough; plus an animated web explainer for talks)
 - Latency benchmark: plaintext search vs. homomorphic search, displayed as a chart
 
 ### Stretch goals (if time allows)

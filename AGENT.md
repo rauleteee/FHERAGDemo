@@ -10,7 +10,7 @@ This project is built directly on top of DataTalks.Club's LLM Zoomcamp, Module 2
 
 Full design rationale lives in `docs/FHE_RAG_Design_Document.md` — read it before making architectural changes.
 
-Deliberately kept simple: just the server/client FHE pipeline plus the educational walkthrough. No LLM agent, no web UI — those were tried and removed to keep the project focused on the cryptography itself.
+Deliberately kept simple: the server/client FHE pipeline plus the educational walkthrough. No LLM agent. There is one web surface — the animated explainer in `web/` (`./run.sh ui`), added deliberately for *talks*. Its backend `web/app.py` (FastAPI) runs the **real** pipeline: it starts `server.app` in a thread, uses `client.crypto_client.FHEClient` (the only secret-key holder) and `shared.embeddings` to encrypt/index the real documents, and exposes real intermediate values (`/api/run`, `/api/space`) that the HTML/CSS/JS frontend animates. It never mocks the crypto. The security invariant holds: the server never receives the secret key and never decrypts; the API only returns client-side-legitimate values (embeddings, ciphertext, encrypted scores, decrypted ranking).
 
 ## Core security invariant (do not break this)
 
@@ -72,4 +72,5 @@ Client and Server are separate FastAPI apps/processes, communicating over HTTP, 
 - Do not attempt to encrypt LLM inference itself — out of scope (see design doc Section 6).
 - Do not add Zama/TFHE as the primary scheme — it's a documented stretch goal for comparison benchmarking only, not a replacement.
 - Do not fabricate benchmark numbers — always run and report actual measured latency.
-- Do not re-add an LLM agent or a web UI without being explicitly asked — both existed in this project before and were deliberately removed to keep the scope focused on the FHE pipeline itself.
+- Do not re-add an LLM agent without being explicitly asked — it existed before and was deliberately removed to keep the scope on the FHE pipeline.
+- The web explainer in `web/` is a *teaching/talk* surface backed by the real pipeline via `web/app.py`. Keep it that way: the browser must stay a viewer — all crypto stays in Python (`client/`, `server/`, `shared/`), never reimplemented in JS, and the secret key must never be sent to the browser or to the server. `web/app.py` may expose only client-side-legitimate values (embeddings, ciphertext, encrypted scores, decrypted ranking). Sample documents come from `shared/sample_documents.py` — don't hardcode them in JS.
