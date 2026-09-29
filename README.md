@@ -84,7 +84,12 @@ A web app built for **explaining this to an audience** — and it runs on the **
 First load takes a few seconds while it encrypts + indexes. What's inside:
 
 - **How embedding search works** — the real 13 embeddings projected to 2D (real PCA), with a query point and the **real dot-product** ranking. Pick a query and watch the nearest documents light up.
+
+  ![Embedding-search view: the 13 real embeddings in 2D with the query point and the real dot-product ranking](images/image.png)
+
 - **Animated comparison** — a `Sin FHE ⟷ Con FHE` toggle over the same client/server stage, driven by a real search you can type yourself ("Ejecutar en el backend"). Play/pause/step controls; you see the response travel back, the client **decrypt** it, and the **real ranking** with the chosen document. A persistent "what the server can read" panel turns red (without FHE) or green (with FHE). Deep-linkable for a talk: `?mode=fhe&step=7`.
+
+  ![Sin FHE / Con FHE comparison: the same real search across client and server, showing what the server can read](images/image1.png)
 - **Theory · without FHE / with FHE** — how each is done and why it matters (embedding inversion; why CKKS).
 - **Cliente vs Servidor** — an explicit matrix of what each side holds and stores.
 
