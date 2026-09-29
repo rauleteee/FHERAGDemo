@@ -105,6 +105,12 @@ The security invariant holds here too: `web/app.py` runs the client (secret key)
 
 `client_cli.py` (run via `./run.sh client`) is the cleanest way to see Client and Server as genuinely separate processes communicating over HTTP — the way they'd run on two different machines in a real deployment.
 
+## End-to-end RAG architecture
+
+An LLM needs grounded context, so it asks the knowledge base — but the whole retrieval happens on ciphertext. The client holds the private key and does all embedding, encryption, and decryption; the untrusted server stores the encrypted knowledge DB and computes similarity **without ever decrypting**. Only ciphertext crosses the boundary.
+
+![FHE-RAG encrypted retrieval architecture: LLM → client (private key, embed/encrypt, decrypt/rank) → untrusted server (homomorphic search over an encrypted knowledge DB) → back to the client, with only ciphertext crossing the trust boundary](docs/architecture/latest/overview.svg)
+
 ## How this works, in one picture
 
 ```mermaid
