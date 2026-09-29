@@ -105,6 +105,12 @@ The security invariant holds here too: `web/app.py` runs the client (secret key)
 
 `client_cli.py` (run via `./run.sh client`) is the cleanest way to see Client and Server as genuinely separate processes communicating over HTTP — the way they'd run on two different machines in a real deployment.
 
+## Embeddings & vector search, visually
+
+Before the FHE part: an **embedding** turns a piece of text into a list of numbers (a vector). Texts with similar meaning get similar vectors, so **searching is just finding the closest vectors** — which comes down to a dot product (`scores = X · v`). That single operation is exactly what this project runs on ciphertext.
+
+![How embeddings and vector search work: text becomes a 384-number vector, similar meanings land close together in vector space, and search ranks documents by the dot product between the query vector and every document vector](docs/architecture/latest/embeddings-vector-search.svg)
+
 ## The idea in two pictures
 
 **Normal search:** you ask your agent a question, and it looks the answer up in a knowledge database. But your question and every document travel as plain text, so whoever runs the server can read all of it.
