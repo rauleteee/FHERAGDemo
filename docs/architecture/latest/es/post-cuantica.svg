@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="agy" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="14" refX="13" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#64748B"/></marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.12"/></filter>
+  </defs>
+
+  <rect width="1200" height="600" fill="#FFFFFF"/>
+
+  <text x="600" y="46" text-anchor="middle" font-size="29" font-weight="800" fill="#0F172A">Por qué necesitamos criptografía post-cuántica</text>
+  <text x="600" y="78" text-anchor="middle" font-size="16.5" fill="#64748B">Un futuro ordenador cuántico podría romper el cifrado actual. Aquí está el problema — y la solución.</text>
+
+  <line x1="392" y1="330" x2="414" y2="330" stroke="#64748B" stroke-width="4" marker-end="url(#agy)"/>
+  <line x1="802" y1="330" x2="824" y2="330" stroke="#64748B" stroke-width="4" marker-end="url(#agy)"/>
+
+  <!-- PANEL 1 -->
+  <rect x="40" y="110" width="350" height="450" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="60" y="145" font-size="16" font-weight="800" fill="#4A90D9">1 · El candado de hoy</text>
+
+  <g filter="url(#sh)" transform="translate(215,235)">
+    <path d="M-26 4 v-16 a26 26 0 0 1 52 0 v16" fill="none" stroke="#4A90D9" stroke-width="8"/>
+    <rect x="-36" y="4" width="72" height="58" rx="10" fill="#E8F4FD" stroke="#4A90D9" stroke-width="3.5"/>
+    <circle cx="0" cy="28" r="8" fill="#4A90D9"/>
+    <rect x="-4" y="28" width="8" height="18" rx="3" fill="#4A90D9"/>
+  </g>
+  <text x="215" y="330" text-anchor="middle" font-size="17" font-weight="800" fill="#0F172A">RSA / ECC</text>
+  <text x="215" y="352" text-anchor="middle" font-size="13.5" fill="#64748B">el cifrado normal de hoy</text>
+
+  <text x="215" y="420" text-anchor="middle" font-size="14" fill="#475569">Un ordenador normal tardaría</text>
+  <text x="215" y="442" text-anchor="middle" font-size="14" fill="#475569"><tspan font-weight="800" fill="#059669">millones de años</tspan> en romperlo.</text>
+  <path d="M150 480 l4 5 l8 -10" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="216" y="486" text-anchor="middle" font-size="13.5" font-weight="700" fill="#059669">seguro hoy</text>
+
+  <!-- PANEL 2 -->
+  <rect x="420" y="110" width="380" height="450" rx="16" fill="#FEF3F3" stroke="#EF4444" stroke-width="2"/>
+  <text x="440" y="145" font-size="16" font-weight="800" fill="#B91C1C">2 · Un hacker con un PC cuántico</text>
+
+  <g filter="url(#sh)" transform="translate(500,240)">
+    <path d="M-38 44 C-38 -6 -20 -30 0 -30 C20 -30 38 -6 38 44 Z" fill="#334155"/>
+    <ellipse cx="0" cy="6" rx="20" ry="24" fill="#1E293B"/>
+    <circle cx="-7" cy="2" r="3.5" fill="#EF4444"/>
+    <circle cx="7" cy="2" r="3.5" fill="#EF4444"/>
+  </g>
+  <text x="500" y="312" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">hacker</text>
+
+  <g filter="url(#sh)" transform="translate(615,235)">
+    <rect x="-40" y="-34" width="80" height="60" rx="8" fill="#F0EDFF" stroke="#7B68EE" stroke-width="3"/>
+    <g stroke="#7B68EE" stroke-width="2.5" fill="none">
+      <ellipse rx="22" ry="8"/>
+      <ellipse rx="22" ry="8" transform="rotate(60)"/>
+      <ellipse rx="22" ry="8" transform="rotate(120)"/>
+    </g>
+    <circle r="5" fill="#7B68EE"/>
+    <rect x="-6" y="26" width="12" height="9" fill="#CBD5E1"/>
+    <rect x="-22" y="35" width="44" height="6" rx="3" fill="#CBD5E1" stroke="#7B68EE" stroke-width="2"/>
+  </g>
+  <text x="610" y="312" text-anchor="middle" font-size="12.5" font-weight="700" fill="#5B4ACF">PC cuántico</text>
+
+  <path d="M672 214 L662 236 L676 238 L664 262" fill="none" stroke="#F59E0B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <g filter="url(#sh)" transform="translate(735,235)">
+    <path d="M-24 4 v-14 a24 24 0 0 1 20 -22" fill="none" stroke="#EF4444" stroke-width="7"/>
+    <path d="M24 4 v-14 a24 24 0 0 0 -9 -20" fill="none" stroke="#EF4444" stroke-width="7"/>
+    <rect x="-34" y="4" width="68" height="56" rx="10" fill="#FEE2E2" stroke="#EF4444" stroke-width="3.5"/>
+    <path d="M2 12 l-9 16 l11 5 l-9 18" fill="none" stroke="#EF4444" stroke-width="3.5" stroke-linejoin="round"/>
+  </g>
+  <text x="740" y="312" text-anchor="middle" font-size="12.5" font-weight="700" fill="#B91C1C">roto en horas</text>
+
+  <text x="610" y="372" text-anchor="middle" font-size="14" fill="#475569"><tspan font-weight="800" fill="#B91C1C">«Cosechar ahora, descifrar después»:</tspan></text>
+  <text x="610" y="394" text-anchor="middle" font-size="14" fill="#475569">un hacker roba tus datos cifrados hoy</text>
+  <text x="610" y="416" text-anchor="middle" font-size="14" fill="#475569">y los abre cuando los PC cuánticos</text>
+  <text x="610" y="438" text-anchor="middle" font-size="14" fill="#475569">sean lo bastante potentes.</text>
+  <g stroke="#B91C1C" stroke-width="3" stroke-linecap="round"><line x1="440" y1="475" x2="452" y2="487"/><line x1="440" y1="487" x2="452" y2="475"/></g>
+  <text x="618" y="486" text-anchor="middle" font-size="13.5" font-weight="700" fill="#B91C1C">problema del futuro, recogido hoy</text>
+
+  <!-- PANEL 3 -->
+  <rect x="830" y="110" width="330" height="450" rx="16" fill="#F0FDF4" stroke="#22C55E" stroke-width="2"/>
+  <text x="850" y="145" font-size="16" font-weight="800" fill="#15803D">3 · Criptografía post-cuántica</text>
+
+  <g filter="url(#sh)" transform="translate(985,235)">
+    <path d="M-26 4 v-16 a26 26 0 0 1 52 0 v16" fill="none" stroke="#16A34A" stroke-width="8"/>
+    <rect x="-36" y="4" width="72" height="58" rx="10" fill="#DCFCE7" stroke="#16A34A" stroke-width="3.5"/>
+    <circle cx="0" cy="28" r="8" fill="#16A34A"/>
+    <rect x="-4" y="28" width="8" height="18" rx="3" fill="#16A34A"/>
+  </g>
+  <g transform="translate(1095,180)">
+    <circle r="26" fill="#DCFCE7" stroke="#22C55E" stroke-width="3"/>
+    <g stroke="#16A34A" stroke-width="2" fill="none">
+      <ellipse rx="15" ry="6"/>
+      <ellipse rx="15" ry="6" transform="rotate(60)"/>
+      <ellipse rx="15" ry="6" transform="rotate(120)"/>
+    </g>
+    <circle r="3.5" fill="#16A34A"/>
+    <line x1="-20" y1="-17" x2="20" y2="17" stroke="#16A34A" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+  <text x="985" y="330" text-anchor="middle" font-size="17" font-weight="800" fill="#0F172A">PQC</text>
+  <text x="985" y="352" text-anchor="middle" font-size="13.5" fill="#64748B">un candado con nuevas matemáticas</text>
+
+  <text x="995" y="420" text-anchor="middle" font-size="14" fill="#475569">Ni un ordenador cuántico</text>
+  <text x="995" y="442" text-anchor="middle" font-size="14" fill="#475569"><tspan font-weight="800" fill="#15803D">puede romperlo.</tspan> Cámbiate ya.</text>
+  <path d="M876 480 l4 5 l8 -10" fill="none" stroke="#15803D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1000" y="486" text-anchor="middle" font-size="13.5" font-weight="700" fill="#15803D">seguro hoy y mañana</text>
+</svg>

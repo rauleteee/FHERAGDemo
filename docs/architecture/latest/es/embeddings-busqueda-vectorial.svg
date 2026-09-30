@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="agy" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="14" refX="13" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="#64748B"/></marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.12"/></filter>
+  </defs>
+
+  <rect width="1200" height="620" fill="#FFFFFF"/>
+
+  <text x="600" y="46" text-anchor="middle" font-size="29" font-weight="800" fill="#0F172A">Cómo funcionan los embeddings y la búsqueda vectorial</text>
+  <text x="600" y="78" text-anchor="middle" font-size="16.5" fill="#64748B">El texto se convierte en una lista de números (un vector). Buscar es solo encontrar los vectores más cercanos — un producto escalar.</text>
+
+  <!-- Flechas entre etapas -->
+  <line x1="374" y1="360" x2="396" y2="360" stroke="#64748B" stroke-width="4" marker-end="url(#agy)"/>
+  <line x1="804" y1="360" x2="826" y2="360" stroke="#64748B" stroke-width="4" marker-end="url(#agy)"/>
+
+  <!-- ETAPA 1 -->
+  <rect x="40" y="110" width="330" height="480" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="60" y="145" font-size="16" font-weight="800" fill="#0D9488">1 · El texto se vuelve números</text>
+
+  <g filter="url(#sh)">
+    <rect x="70" y="170" width="270" height="86" rx="10" fill="#FFFFFF" stroke="#4A90D9" stroke-width="2"/>
+  </g>
+  <text x="205" y="200" text-anchor="middle" font-size="13.5" fill="#334155">«El FHE permite operar</text>
+  <text x="205" y="220" text-anchor="middle" font-size="13.5" fill="#334155">sobre datos cifrados</text>
+  <text x="205" y="240" text-anchor="middle" font-size="13.5" fill="#334155">sin descifrarlos.»</text>
+
+  <line x1="205" y1="262" x2="205" y2="298" stroke="#64748B" stroke-width="4" marker-end="url(#agy)"/>
+  <text x="252" y="286" font-size="12" fill="#64748B">modelo de embeddings</text>
+
+  <g filter="url(#sh)">
+    <rect x="60" y="312" width="290" height="60" rx="10" fill="#ECFDFA" stroke="#14B8A6" stroke-width="2"/>
+  </g>
+  <text x="205" y="348" text-anchor="middle" font-size="15" font-weight="700" fill="#0D9488" font-family="'SF Mono',Menlo,Consolas,monospace">[ -0.03, 0.71, -0.04, 0.14, … ]</text>
+  <text x="205" y="398" text-anchor="middle" font-size="13" font-weight="700" fill="#0D9488">384 números = el embedding</text>
+
+  <text x="205" y="540" text-anchor="middle" font-size="13" fill="#64748B">Un modelo convierte el <tspan font-weight="700">significado</tspan></text>
+  <text x="205" y="560" text-anchor="middle" font-size="13" fill="#64748B">del texto en una lista fija de números.</text>
+
+  <!-- ETAPA 2 -->
+  <rect x="400" y="110" width="400" height="480" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="420" y="145" font-size="16" font-weight="800" fill="#4A90D9">2 · Lo parecido queda cerca</text>
+
+  <rect x="420" y="165" width="360" height="300" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <g stroke="#22C55E" stroke-width="2" stroke-dasharray="4 4">
+    <line x1="700" y1="300" x2="660" y2="315"/>
+    <line x1="700" y1="300" x2="680" y2="255"/>
+    <line x1="700" y1="300" x2="620" y2="270"/>
+  </g>
+
+  <g fill="#4A90D9">
+    <circle cx="620" cy="270" r="11"/><circle cx="660" cy="315" r="11"/><circle cx="680" cy="255" r="11"/><circle cx="640" cy="230" r="11"/>
+  </g>
+  <g fill="#7B68EE">
+    <circle cx="530" cy="290" r="11"/><circle cx="560" cy="345" r="11"/>
+  </g>
+  <g fill="#FF8C42">
+    <circle cx="470" cy="410" r="11"/><circle cx="505" cy="440" r="11"/><circle cx="455" cy="375" r="11"/>
+  </g>
+  <path d="M700 286 l13 22 l-26 0 Z" fill="#16A34A" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="716" y="298" font-size="12.5" font-weight="700" fill="#15803D">tu pregunta</text>
+
+  <g font-size="12.5" fill="#475569">
+    <circle cx="432" cy="500" r="7" fill="#4A90D9"/><text x="444" y="504">Cripto / FHE</text>
+    <circle cx="560" cy="500" r="7" fill="#FF8C42"/><text x="572" y="504">Salud</text>
+    <circle cx="655" cy="500" r="7" fill="#7B68EE"/><text x="667" y="504">Negocio</text>
+  </g>
+  <text x="600" y="540" text-anchor="middle" font-size="13" fill="#64748B">Cada vector es un punto. Los textos del mismo</text>
+  <text x="600" y="560" text-anchor="middle" font-size="13" fill="#64748B">tema quedan unos cerca de otros.</text>
+
+  <!-- ETAPA 3 -->
+  <rect x="830" y="110" width="330" height="480" rx="16" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="850" y="145" font-size="16" font-weight="800" fill="#7B68EE">3 · Buscar = producto escalar</text>
+
+  <g filter="url(#sh)">
+    <rect x="855" y="168" width="280" height="74" rx="10" fill="#F0EDFF" stroke="#7B68EE" stroke-width="2"/>
+  </g>
+  <text x="995" y="205" text-anchor="middle" font-size="24" font-weight="800" fill="#5B4ACF" font-family="'SF Mono',Menlo,Consolas,monospace">scores = X · v</text>
+  <text x="995" y="228" text-anchor="middle" font-size="11.5" fill="#6D5FCB">cada vector de documento · tu vector de pregunta</text>
+
+  <g font-family="'SF Mono',Menlo,Consolas,monospace">
+    <rect x="850" y="275" width="290" height="34" rx="7" fill="#ECFDF3" stroke="#22C55E" stroke-width="2"/>
+    <text x="866" y="297" font-size="13" font-weight="700" fill="#15803D">1</text>
+    <rect x="884" y="286" width="180" height="12" rx="6" fill="#E2E8F0"/>
+    <rect x="884" y="286" width="150" height="12" rx="6" fill="#22C55E"/>
+    <text x="1124" y="297" text-anchor="end" font-size="13" font-weight="700" fill="#15803D">0.70</text>
+    <text x="866" y="337" font-size="13" fill="#64748B">2</text>
+    <rect x="884" y="326" width="180" height="12" rx="6" fill="#E2E8F0"/>
+    <rect x="884" y="326" width="128" height="12" rx="6" fill="#94A3B8"/>
+    <text x="1124" y="337" text-anchor="end" font-size="13" fill="#334155">0.62</text>
+    <text x="866" y="377" font-size="13" fill="#64748B">3</text>
+    <rect x="884" y="366" width="180" height="12" rx="6" fill="#E2E8F0"/>
+    <rect x="884" y="366" width="96" height="12" rx="6" fill="#94A3B8"/>
+    <text x="1124" y="377" text-anchor="end" font-size="13" fill="#334155">0.50</text>
+    <text x="866" y="417" font-size="13" fill="#64748B">4</text>
+    <rect x="884" y="406" width="180" height="12" rx="6" fill="#E2E8F0"/>
+    <rect x="884" y="406" width="82" height="12" rx="6" fill="#94A3B8"/>
+    <text x="1124" y="417" text-anchor="end" font-size="13" fill="#334155">0.47</text>
+    <text x="866" y="457" font-size="13" fill="#64748B">5</text>
+    <rect x="884" y="446" width="180" height="12" rx="6" fill="#E2E8F0"/>
+    <rect x="884" y="446" width="62" height="12" rx="6" fill="#94A3B8"/>
+    <text x="1124" y="457" text-anchor="end" font-size="13" fill="#334155">0.40</text>
+  </g>
+
+  <text x="995" y="540" text-anchor="middle" font-size="13" fill="#64748B">Comparas la pregunta con cada vector; las</text>
+  <text x="995" y="560" text-anchor="middle" font-size="13" fill="#64748B">puntuaciones más altas son tus resultados.</text>
+
+  <text x="600" y="600" text-anchor="middle" font-size="13.5" font-style="italic" fill="#0D9488">Esta es la única operación que el FHE ejecuta sobre el cifrado — el producto escalar nunca necesita ver el texto claro.</text>
+</svg>
